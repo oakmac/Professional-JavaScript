@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+	<title>Lesson 2, Example 1 - Execution Scope</title>
+</head>
+<body>
+<script>
+
+var printThis = function() {
+	console.log(this.foo);
+};
+
+var obj1 = {
+	foo : "bar1",
+	print : printThis,
+	child : {
+		foo : "bar2",
+		print : printThis
+	}
+};
+
+// executing in the scope of the global object (window)
+printThis(); // undefined because window.foo does not exist
+
+// executing in the scope of obj1
+obj1.print(); // "bar1"
+
+// executing in the scope of obj1.child
+obj1.child.print(); // "bar2"
+
+// change the value of obj1.child.foo
+obj1.child.foo = "BAZ";
+obj1.child.print(); // "BAZ"
+
+// delete obj1.child.foo
+delete obj1.child.foo;
+obj1.child.print(); // undefined
+
+</script>
+</body>
+</html>

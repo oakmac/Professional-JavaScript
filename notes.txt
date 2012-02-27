@@ -6,7 +6,7 @@ https://www.destroyallsoftware.com/talks/wat
 http://stackoverflow.com/questions/9032856/can-anyone-explain-these-bizarre-javascript-behaviours-mentioned-in-the-wat-ta/9033306#9033306
 
 Further Reading:
-1. JavaScript: The Good Parts - Douglas Crockford (read twice)
+1. JavaScript: The Good Parts - Douglas Crockford (read twice, then once you've read it twice read it again)
 2. JavaScript Patterns - Stoyan Stefanov
 3. http://developer.yahoo.com/performance/
 4. How a browser works http://www.html5rocks.com/en/tutorials/internals/howbrowserswork/
@@ -104,7 +104,7 @@ Lesson11 - DOM Events
 "Tips from the trenches"
 > Create Global namespace for your project; put your shit in there
 > anonymous scope for the page-level stuff, "export" event handlers out of that scope
-> rename files on publish
+> rename files on publish to bust cacheing
 > always prefer explicit to implicit (type conversion, naming, etc)
 > "smart data, stupid code"  use data structures where possible.  especially frontend code should be full of data structures
 > event delegation
