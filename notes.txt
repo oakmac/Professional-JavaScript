@@ -1,41 +1,45 @@
+PUBLIC SERVICE ANNOUNCEMENT
+* raise your hand if you have a google account, gmail
+* keep it raised if this is a primary or main account in your life; ie: if it's contents are important
+* lower your hand if you use two-factor authentication
+* DO IT NOW.
+
+
+# Introduction #
 This talk is called Professional JavaScript; it's designed for people who write JavaScript professionally.
+
 My goal is to find the sweet spot in the spectrum from "I copied this from javascript.com and it works" to "What is the abstract syntax tree for this memoized closure?"
 
-"Wat" lightning talk
-https://www.destroyallsoftware.com/talks/wat
-http://stackoverflow.com/questions/9032856/can-anyone-explain-these-bizarre-javascript-behaviours-mentioned-in-the-wat-ta/9033306#9033306
 
-Further Reading:
-1. JavaScript: The Good Parts - Douglas Crockford (read twice, then once you've read it twice read it again)
-2. JavaScript Patterns - Stoyan Stefanov
-3. http://developer.yahoo.com/performance/
-4. How a browser works http://www.html5rocks.com/en/tutorials/internals/howbrowserswork/
-
-People to listen to:
-> Douglas Crockford
-> Stoyan Stefanov / YUI Performance Team
-> Steve Souders
-> Paul Irish - chrome, jquery, html5rocks team
-> John Resig (he can get a little too abstract)
+# Background #
+* I've made just about every mistake you can make with JavaScript.
+* Been using JavaScript since around 2007
 
 
+# WAT Lightning Talk #
+* [WAT Lightining Talk][1]
+* [WAT Code Explanation][2]
+[1]: https://www.destroyallsoftware.com/talks/wat
+[2]: http://stackoverflow.com/questions/9032856/can-anyone-explain-these-bizarre-javascript-behaviours-mentioned-in-the-wat-ta/9033306#9033306
+
+
+
+# Optimizations #
+* Graph of optimizations
 "Let's talk about optimizations."
-Don't be penny-wise and pound-foolish.
+* Don't be penny-wise and pound-foolish.
 Concat and minimize files.  Yes, you need to be doing this.
 work your way down the list; prioritize the most expensive stuff first (HTTP requests!)
 scripts at the bottom; CSS at the top
+you basicaly cannot optimize CSS beyond avoiding some simple things - don't worry about it
 
-I don't use coffeescript or LESS - old timer?  Or just don't need the syntax crutch
-
-"There will be cursing in this talk, because some shit is just dumb."
+I don't use coffeescript or LESS - old timer?  Or just don't need the syntax crutch.  Would prefer 100% compliance to the Closure Linter over alternate syntax.
 
 You basically never need to modify the prototype unless you're building objects that need to be constructed (ie: a framework)
 
 Data structures are your friend!  Show example of menu as a JS array vs markup (angle bracket tax)
 
-always do these things:
-> always force browsers into standards mode (recommend <!doctype html> in 2012)
-> <script> tag usage
+
 
 
 How to structure your pages
@@ -43,17 +47,19 @@ Show off UltimateCentral structure
 The problems of global scope are the same as regular scope
 List of "nevers" from The Good Parts + personal tips ( var foo = function() )
 "Mostly never" vs "never never"
+at first when I read "The Good Parts" I thought some of his recommendations were pedantic; now I follow them basically 100% and add a few of my own
+(do not agree about "continue")
+when in doubt, be more explicit (true for any flexible language)
 
 
-
-Lesson1 - everything is an object
-> object definition, show syntax examples
+# Lesson1 - Basic Types, Objects, Arrays, Functions, RegExp #
+> simple types: numbers, strings, booleans, null, undefined
+> all numbers are 64-bit floating point (Java double)
+> everything else is an Object (functions, arrays, regular expressions, objects)
 > functions are objects
-> integers are objects
-> strings are objects
 > arrays are objects
 > objects are objects
-> don't do this shit - don't modify the global objects (exception: "enhancing" up to ECMA5)
+> don't do this - don't modify the global objects (exception: polyfills to "enhance" up to ECMA5)
 
 Lesson2 - everything executes within an object scope
 > show 3-layer hoisting example
@@ -66,7 +72,7 @@ Lesson3 - how prototypical inheritance works
 > create object, change one value, change the prototype, show how it's changed one object but not another (hoisting)
 
 Lesson4 - things to know about functions
-> required args and optional object
+> required args and optional object - look at the Google style guide for this
 
 Lesson5 - things to know about strings
 > 
@@ -81,7 +87,7 @@ Lesson7 - constructor pattern
 
 Lesson8 - What is JSON, really?
 > JSON is a subset of JavaScript
-> JSON is a fantastic interchange format
+> JSON is a fantastic interchange format; prefer it over XML in almost every case
 
 --- up to this point, everything has been pure JS ---
 
@@ -95,17 +101,60 @@ Lesson9 - The DOM
 
 Lesson10 - The Browser
 > browser gives us global functions and other methods (HTTPRequest, WebSockets, etc)
+> some of these objects are consistent, some are not.  use libraries to abstract them to make consistent
 
 Lesson11 - DOM Events
 > explain the event loop
 > show how events work
 > explain event delgation
 
-"Tips from the trenches"
+--- Tips from the trenches ---
+
+always do these things:
+> always force browsers into standards mode (recommend <!doctype html> in 2012)
+> <script> tag usage
+
+
+> read books, not blogs: 1) people  2) editing  3) coherence
+> use a CSS reset
+> use feature detection; NOT browser sniffing
+
+
+1. Have a build process.
+> Dev to production should be one-step.
+> Minimize and concatenate files.
+> rename to bust caches
+> use Google Closure Linter to prevent errors
+> in terms of optimizations, this stuff is huge.  almost nothing else you can do in JS or CSS will be more important than this step
+
+
+
 > Create Global namespace for your project; put your shit in there
 > anonymous scope for the page-level stuff, "export" event handlers out of that scope
-> rename files on publish to bust cacheing
 > always prefer explicit to implicit (type conversion, naming, etc)
 > "smart data, stupid code"  use data structures where possible.  especially frontend code should be full of data structures
 > event delegation
 > exit functions as early as possible (show a long if block vs early return / continue)
+> need to show an example of how to use default values to functions, ie: foo = foo || 3;
+
+
+# General Engineering Tips #
+> I could give a whole talk on this, but just wanted to distill these nuggets.
+"If you're not doing these things; you're not a professional.  This stuff separates the amateurs from the professionals."
+
+* Use source code control
+* Have an automated build process.
+* Use a bug tracking system.
+* Develop on a server.
+
+
+# Further Reading #
+1. JavaScript: The Good Parts - Douglas Crockford (read twice, then once you've read it twice read it again)
+2. JavaScript Patterns - Stoyan Stefanov
+3. http://developer.yahoo.com/performance/
+4. How a browser works http://www.html5rocks.com/en/tutorials/internals/howbrowserswork/
+5. Google JavaScript Style Guide is good food for thought: http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml
+
+
+
+

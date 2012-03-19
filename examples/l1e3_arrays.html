@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+	<title>Lesson 1, Example 3 - Arrays</title>
+</head>
+<body>
+<script>
+
+// Arrays are an instance of an Object (more on this later)
+
+// this is an empty array
+var arr1 = [];
+
+// array with several values
+// NOTE: trailing commas are not allowed
+var arr2 = ["alpha", "bravo", "charlie"];
+
+// arrays are zero-indexed
+console.log( arr2[1] ); // "bravo"
+
+// arrays can contain values of multiple types
+var arr3 = [0, 1, "two", "three", 4, { num : 5 }];
+
+// arrays come with the .length property
+console.log( arr3.length ); // 6
+
+// .push method
+arr3.push("six"); // adds the string "six" to the end of arr3
+
+// .join method
+console.log( arr2.join("-") ); // "alpha-bravo-charlie"
+
+// arrays have more methods available:
+// https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array
+
+// arrays can be the value of an object property
+var obj1 = {
+	cities : ["Houston", "Dallas", "Austin"]
+};
+
+</script>
+</body>
+</html>

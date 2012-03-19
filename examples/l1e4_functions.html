@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+	<title>Lesson 1, Example 3 - Arrays</title>
+</head>
+<body>
+<script>
+
+// Functions are an instance of an Object (more on this later)
+
+// a simple function
+function add1(a, b) {
+	return a + b;
+};
+
+// another way of writing the same function (NOTE: this is preferred)
+var add2 = function(a, b) {
+	return a + b;
+};
+
+// execute a function with ()
+var result = add2(3, 2); 
+console.log( result ); // 5
+
+// functions can be an object property
+var obj1 = {
+	add : add2,
+	subtract : function(a, b) {
+		return a - b;
+	}
+};
+
+console.log( obj1.add(3, 2) ); // 5
+console.log( obj1.subtract(3, 2) ); // 1
+
+// function arguments are optional
+
+// this is just scratching the surface of functions
+// more: https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function
+
+</script>
+</body>
+</html>

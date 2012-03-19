@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+	<title>Lesson 1, Example 2 - Objects</title>
+</head>
+<body>
+<script>
+
+// this is an empty object; it has no properties
+var obj1 = {};
+
+// object with two properties: foo, num
+var obj2 = {
+	foo : "bar",
+	num : 3
+};
+
+// change "bar" to "baz" (dot notation)
+obj2.foo = "baz";
+
+// change "baz" to "bar" (bracket notation)
+// NOTE: dot notation is preferred over bracket notation
+obj2["foo"] = "bar";
+
+// object properties can be other objects, resulting in nested objects
+var me = {
+	name : {
+		first : "Chris",
+		last  : "Oakman"
+	},
+	location : {
+		name : "Houston, TX",
+		lat  : 29.75961,
+		lng  : -95.36270
+	}
+};
+
+console.log(me.name.first + " " + me.name.last); // "Chris Oakman"
+
+
+/*
+Number.prototype.fruit = "apple";
+
+var age = 27;
+
+// add a property to the add_excitement function
+// NOTE: this is for example only, don't do this in practice
+//age.fruit = "apple";
+
+console.log(age.fruit); // "bar"
+*/
+
+</script>
+</body>
+</html>

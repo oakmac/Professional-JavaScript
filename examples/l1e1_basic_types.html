@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+	<title>Lesson 1, Example 1 - Basic Types</title>
+</head>
+<body>
+<script>
+
+// numbers
+var num1 = 96;
+var num2 = 2.5;
+var num3 = 1e3; // 1000
+
+if (1 === 1.0) { // true
+	console.log('every number is a 64-bit floating point');
+}
+
+if (1000 === num3) { // true
+	console.log('one thousand');
+}
+
+// strings
+var str1 = 'Hello';
+var str2 = "world!";
+
+console.log(str1 + ' ' + str2);
+
+// boolean
+var yup  = true;
+var nope = false;
+
+// null (NOTE: usually you never assign this)
+var never = null;
+
+// undefined
+var huh;
+console.log(huh); // undefined
+
+</script>
+</body>
+</html>
