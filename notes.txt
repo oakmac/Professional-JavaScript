@@ -1,3 +1,12 @@
+---- NEED TO INCLUDE
+> use of Closure Linter
+> recommendations for building / deploying script
+> I've never seen a situation where the technical challenges of a project
+  were greater than the social challenges of working with a team.
+> signal vs noise of information
+
+---- OLD
+
 PUBLIC SERVICE ANNOUNCEMENT
 * raise your hand if you have a google account, gmail
 * keep it raised if this is a primary or main account in your life; ie: if it's contents are important
@@ -5,24 +14,32 @@ PUBLIC SERVICE ANNOUNCEMENT
 * DO IT NOW.
 
 
-# Introduction #
-This talk is called Professional JavaScript; it's designed for people who write JavaScript professionally.
-
-My goal is to find the sweet spot in the spectrum from "I copied this from javascript.com and it works" to "What is the abstract syntax tree for this memoized closure?"
 
 
-# Background #
-* I've made just about every mistake you can make with JavaScript.
-* Been using JavaScript since around 2007
 
+The beginning of the talk will escalate technically, starting with the basics and then getting into the more
+complicated aspects of the language.  I'll cover basic syntax, objects, functions, execution scope, prototype inheritance,
+the DOM, and browser events.
+
+Next I'll move into "Tips from the Trenches" and share lessons learned and best practices from experience.
+This will include things to avoid, things that make your life easier, and some recommendations for optimizations.
+
+Finally, I'll wrap up with "Unsolicited Advice".  Ideas and observations about the practice of software
+engineering that apply to development in any language.
+
+
+
+
+
+
+
+http://wonder-tonic.com/geocitiesizer/index.php
 
 # WAT Lightning Talk #
 * [WAT Lightining Talk][1]
 * [WAT Code Explanation][2]
 [1]: https://www.destroyallsoftware.com/talks/wat
 [2]: http://stackoverflow.com/questions/9032856/can-anyone-explain-these-bizarre-javascript-behaviours-mentioned-in-the-wat-ta/9033306#9033306
-
-
 
 # Optimizations #
 * Graph of optimizations
@@ -39,14 +56,12 @@ You basically never need to modify the prototype unless you're building objects 
 
 Data structures are your friend!  Show example of menu as a JS array vs markup (angle bracket tax)
 
-
+TODO: copy the html5 slide info from google code to local repo
 
 
 How to structure your pages
 Show off UltimateCentral structure
 The problems of global scope are the same as regular scope
-List of "nevers" from The Good Parts + personal tips ( var foo = function() )
-"Mostly never" vs "never never"
 at first when I read "The Good Parts" I thought some of his recommendations were pedantic; now I follow them basically 100% and add a few of my own
 (do not agree about "continue")
 when in doubt, be more explicit (true for any flexible language)
@@ -74,9 +89,6 @@ Lesson3 - how prototypical inheritance works
 Lesson4 - things to know about functions
 > required args and optional object - look at the Google style guide for this
 
-Lesson5 - things to know about strings
-> 
-
 Lesson6 - module pattern
 > think in terms of scope; you're creating an isolated scope for your operation and exporting things out of that scope
 
@@ -85,9 +97,6 @@ Lesson7 - constructor pattern
 > write the object interface first; work backwards from there
 > put functions in .prototype where possible
 
-Lesson8 - What is JSON, really?
-> JSON is a subset of JavaScript
-> JSON is a fantastic interchange format; prefer it over XML in almost every case
 
 --- up to this point, everything has been pure JS ---
 
@@ -110,15 +119,6 @@ Lesson11 - DOM Events
 
 --- Tips from the trenches ---
 
-always do these things:
-> always force browsers into standards mode (recommend <!doctype html> in 2012)
-> <script> tag usage
-
-
-> read books, not blogs: 1) people  2) editing  3) coherence
-> use a CSS reset
-> use feature detection; NOT browser sniffing
-
 
 1. Have a build process.
 > Dev to production should be one-step.
@@ -139,22 +139,8 @@ always do these things:
 
 
 # General Engineering Tips #
-> I could give a whole talk on this, but just wanted to distill these nuggets.
-"If you're not doing these things; you're not a professional.  This stuff separates the amateurs from the professionals."
 
 * Use source code control
 * Have an automated build process.
 * Use a bug tracking system.
 * Develop on a server.
-
-
-# Further Reading #
-1. JavaScript: The Good Parts - Douglas Crockford (read twice, then once you've read it twice read it again)
-2. JavaScript Patterns - Stoyan Stefanov
-3. http://developer.yahoo.com/performance/
-4. How a browser works http://www.html5rocks.com/en/tutorials/internals/howbrowserswork/
-5. Google JavaScript Style Guide is good food for thought: http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml
-
-
-
-

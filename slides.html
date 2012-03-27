@@ -4,14 +4,19 @@
   <title>Professional JavaScript 2012 - Chris Oakman</title>
   <meta charset='utf-8'>
   <script src='http://html5slides.googlecode.com/svn/trunk/slides.js'></script>
-</head>
-  
   <style>
-	/* no Google logo */
+	/* remove the Google logo */
     article {
 		background: #fff !important; /* haha, first time in my life I've used !important */
 	}
-  </style>
+	.string {
+		color: #008A35;
+	}
+	.small2 {
+		font-size: 18px !important;
+	}
+  </style> 
+</head>
 
   <body style='display: none'>
 
@@ -19,8 +24,7 @@
 
       <article>
         <h1>Professional JavaScript</h1>
-        <p>
-          Chris Oakman
+        <p>Chris Oakman
           <br>
           March 2012
         </p>
@@ -29,8 +33,7 @@
       <article>
        <h3>Overview</h3>
         <ul>
-          <li>Introduction &amp; Background
-          <li>Part I: JavaScript Lessons
+          <li>Part I: JavaScript 101
           <li>Part II: Tips from the Trenches
 		  <li>Part III: Unsolicited Advice
           <li>Q&amp;A
@@ -41,7 +44,7 @@
 		<h3>Goal</h3>
 		<p>The target audience for this talk are people who write JavaScript professionally.</p>
 		<p>My goal is to find the sweet spot between practice and theory.</p>
-		<img src="sweet_spot.png" class='centered' />
+		<img src="img/sweet_spot.png" alt="Sweet Spot" class='centered' />
 	  </article>
 
 	  <article>
@@ -50,15 +53,686 @@
 	  </article>
 	  
 	  <article>
-		<h3>Lesson 1 - Basic Types</h3>
+		<h3>Lesson 1 - Simple Types</h3>
+		<p>The simple types in JavaScript are:</p>
+		<ul>
+			<li>Numbers
+			<li>Strings
+			<li>Boolean
+			<li>null
+			<li>undefined
+		</ul>
+	  </article>
+	  
+      <article class="smaller">
+        <h3>L01E01 - Simple Types: Numbers</h3>
+        <section>
+        <pre>
+// numbers
+var num1 = 96;
+var num2 = 2.5;
+var num3 = 1e3; // 1000
+
+if (1 === 1.0) { // true
+  console.log('every number is a 64-bit floating point');
+}
+
+if (1000 === num3) { // true
+  console.log('one thousand');
+}
+
+// NOTE: beware of floating point operations in JavaScript
+if (0.1 + 0.2 === 0.3) { // false
+  console.log('Pigs are flying.');
+}
+
+// convert to integers if needed
+if (0.1 * 1000 + 0.2 * 1000 === 0.3 * 1000) { // true
+  console.log('Integers are generally safe.');
+}
+</pre>
+        </section>
+	  </article>
+	  
+      <article>
+        <h3>L01E02 - Simple Types: Strings</h3>
+        <section>
+        <pre>
+// strings
+var str1 = 'Hello';  // single quotes
+var str2 = "world!"; // double quotes
+
+console.log(str1 + ' ' + str2); // "Hello world!"
+
+// strings have a length property
+console.log( str1.length ); // 5
+
+// strings have built-in methods
+console.log( str1.toUpperCase() ); // "HELLO"
+
+console.log( str1.indexOf("e") ); // 1
+console.log( str1.indexOf("z") ); // -1 (z not found)
+
+console.log( str1.substr(3, 2) ); // "lo"
+
+// NOTE: JavaScript does not have chars, only strings
+</pre>
+        </section>
+      </article>		  
+	  
+      <article>
+        <h3>L01E03 - Simple Types: Boolean, null, undefined</h3>
+        <section>
+        <pre>
+// boolean
+var yup  = true;
+var nope = false;
+
+// null
+// NOTE: usually you never assign this
+var never = null;
+
+// undefined is lack of assignment
+var huh;
+console.log(huh); // undefined
+</pre>
+        </section>
+      </article>
+	  
+	  <article class="smaller">
+		<h3>Lesson 2 - Objects</h3>
+		<div style="margin-top: 40px">Everything else in JavaScript is an Object.</div>
+		<div class="build">
+			<p style="margin-top: 20px">(yes, everything)</p>
+			<div style="margin-top: 20px">
+				<table>
+				  <tr>
+					<th colspan="2" style="text-align: center; width: 50%">Simple Types
+					<th colspan="2" style="text-align: center; width: 50%">Objects
+				  <tr>
+					<td>Numbers
+					<td><code>9</code>
+					<td>Objects
+					<td><code>{}</code>
+				  <tr>
+					<td>Strings
+					<td><code class="string">"hello"</code>
+					<td>Arrays
+					<td><code>[]</code>
+				  <tr>
+					<td>Boolean
+					<td><code class="blue">true</code>
+					<td>Functions
+					<td><code>function() {}</code>
+				  <tr>
+					<td>null
+					<td><code class="blue">null</code>
+					<td>Regular<br />Expressions
+					<td><code class="string">/foo/i</code>
+				  <tr>
+					<td>undefined
+					<td><code class="blue">undefined</code>
+					<td>
+					<td>
+				</table>
+			</div>
+			<p>Numbers, Strings, and Booleans are object-like.</p>
+		</div><!-- end .build -->
+	  </article>
+	  
+      <article class="smaller">
+        <h3>L02E01 - Objects: Basic Syntax</h3>
+        <section>
+        <pre>
+// this is an empty object; it has no properties
+var empty_obj = {};
+
+// object with three properties: name, height-in-m, type
+var monster = {
+  name          : "King Kong",
+  "height-in-m" : 42,
+  type          : "gorilla"
+};
+
+// "King Kong is a gorilla"
+console.log(monster.name + " is a " + monster.type);
+
+// change the value of monster.type
+monster.type = 'giant gorilla';
+
+// "King Kong is a 42m tall giant gorilla"
+console.log(monster.name + " is a " + monster["height-in-m"]
+            + "m tall " + monster.type);
+
+// NOTE: dot notation is preferred over bracket notation where possible
+		</pre>
+        </section>
+      </article>
+	  
+      <article class="smaller">
+        <h3>L02E02 - Objects: Nesting</h3>
+        <section>
+        <pre>
+// a property's value can be obtained from any expression,
+// including other objects
+var me = {
+  name : {
+    first : "Chris",
+    last  : "Oakman"
+  },
+  location : {
+    name : "Houston, TX",
+    lat  : 29.75961,
+    lng  : -95.36270
+  }
+};
+
+console.log(me.name.first + " " + me.name.last); // "Chris Oakman"
+
+// NOTE: nested objects are a powerful way to represent data
+//       more on this when we get into the DOM
+</pre>
+        </section>
+	  </article>
+	  
+      <article class="smaller">
+        <h3>L02E03 - Arrays</h3>
+        <section>
+        <pre>
+// this is an empty array
+var arr1 = [];
+
+// array with several values
+// NOTE: trailing commas are not allowed
+var arr2 = ["alpha", "bravo", "charlie"];
+
+// arrays are zero-indexed
+console.log( arr2[1] ); // "bravo"
+
+// arrays can contain values of multiple types
+var arr3 = [0, 1, "two", "three", 4, { num : 5 }];
+console.log( arr3[5].num ); // 5
+
+// arrays come with the .length property
+console.log( arr3.length ); // 6
+
+// .push method
+arr3.push("six"); // adds the string "six" to the end of arr3
+
+// .join method
+console.log( arr2.join("-") ); // "alpha-bravo-charlie"
+
+// arrays can be the value of an object property
+var obj1 = {
+  cities : ["Houston", "Dallas", "Austin"]
+};
+</pre>
+        </section>
+	  </article>
+	  
+      <article>
+        <h3>L02E04 - Regular Expressions</h3>
+        <section>
+        <pre>
+// JavaScript has regular expressions
+var str1   = "Foo Bar";
+var regexp = /foo/i;
+
+// NOTE: "replace" is a method of every String
+var str2 = str1.replace(regexp, "Bar");
+
+console.log( str2 ); // "Bar Bar"
+
+// Regular Expressions are a powerful tool
+// learn them, use them, don't over-use them
+</pre>
+        </section>
+	  </article>
+	  
+      <article class="smaller">
+        <h3>Misc - JSON</h3>
+		<ul>
+			<li>JavaScript Object Notation
+			<li>JSON is a subset of JavaScript syntax (ie: more restrictive syntax)
+			<li>All property names must be in double quotes
+			<li>Great interchange format; prefer it over XML in basically every instance
+			<li><strong>Always</strong> parse JSON, never <code>eval()</code>
+		</ul>
+        <section>
+			
+<div style="float: left; width: 50%; margin-right: 15px;">
+<pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;pets&gt;
+  &lt;pet name="Mack" type="cat" /&gt;
+  &lt;pet name="Simon" type="cat" /&gt;
+  &lt;pet name="Sophie" type="dog" /&gt;
+&lt;/pets&gt;
+</pre>
+</div>
+<div style="float: left; width: 45%;">
+<pre>
+{
+  "pets" : [
+    {
+      "name" : "Mack",
+      "type" : "cat"
+    },
+    {
+      "name" : "Simon",
+      "type" : "cat"
+    },
+    {
+      "name" : "Sophie",
+      "type" : "dog"
+    }
+  ]
+}
+</pre>
+</div>
+<div style="clear: both"></div>
+
+        </section>
+	  </article>
+	  
+	  <article class="smaller">
+		<h3>Lesson 3 - Functions</h3>
+
+	  </article>
+	  
+      <article class="smaller">
+        <h3>L03E01 - Function Basics</h3>
+		<!--
+		<ul>
+			<li>Functions execute within the context of an object
+			<li>The value of "this" is the object in which the function is executing in
+		</ul>
+		-->
+        <section>
+        <pre>
+// a simple function
+function add1(a, b) {
+  return a + b;
+};
+
+// another way of writing the same function (NOTE: this is preferred)
+var add2 = function(a, b) {
+  return a + b;
+};
+
+// execute a function with ()
+var result = add2(3, 2); 
+console.log( result ); // 5
+
+// functions can be the value of an object property
+var obj1 = {
+  add : add2,
+  subtract : function(a, b) {
+    return a - b;
+  }
+};
+
+console.log( obj1.add(3, 2) ); // 5
+console.log( obj1.subtract(3, 2) ); // 1
+</pre>
+        </section>
+	  </article>
+	  
+      <article class="smaller">
+        <h3>L03E02 - Variable Scope</h3>
+        <section>
+        <pre>
+var a = "apple";
+var func1 = function() {
+  // inner methods have access to outside variables
+  // this function has access to variable "a"
+  
+  a = "apricot"; // change the value of "a"
+  console.log(a);
+};
+console.log(a); // "apple"
+func1();        // "apricot"
+console.log(a); // "apricot" (the value of "a" was changed inside func1)
+
+
+var b = "banana";
+var func2 = function() {
+  // define variable "b" inside this function
+  // completely separate from the "b" defined outside the function
+  var b = "blueberry";
+  console.log(b);
+};
+console.log(b); // "banana"
+func2();        // "blueberry"
+console.log(b); // "banana" (the value of "b" in this scope does not change)
+</pre>
+        </section>
+	  </article>
+	  
+      <article class="smaller">
+        <h3>L03E03 - Closure</h3>
+        <section>
+        <pre>
+var counter = (function() {
+
+  // variable count is defined inside our function
+  var count = 0;
+  
+  // we return an object with three properties
+  // each property is a function that has access to the "count" variable
+  return {
+    up    : function() { count++; },
+    down  : function() { count--; },
+    value : function() { return count; }
+  };
+  
+})(); // execute the function immediately, which returns an object
+
+console.log( counter.value() ); // 0
+for (var i = 0; i < 6; i++) { // increment 6 times
+  counter.up();
+}
+console.log( counter.value() ); // 6
+counter.down();
+console.log( counter.value() ); // 5
+
+// the "count" variable exists in memory, but we do not have direct access to it
+// this is called closure
+</pre>
+        </section>
+	  </article>
+
+      <article class="smaller">
+        <h3>L03E03 - Execution Scope</h3>
+        <section>
+        <pre>
+
+		</pre>
+        </section>
+	  </article>
+	  
+	  <article>
+		<h3>Lesson N - The DOM</h3>
 		
 	  </article>
+	  
+      <article class="smaller">
+        <h3>LNE01 - What is the DOM?</h3>
+		<ul>
+			<li>The DOM is what it sounds like: Document Object Model
+			<li>It's the browser exposing the underlying document structure through JavaScript objects
+		</ul>
+        <section>
+
+<div style="float: left; width: 40%; margin-right: 15px;">
+<pre style="height: 100%">
+&lt;!-- HTML --&gt;
+&lt;div id=pets&gt;
+  &lt;h1&gt;Pets&lt;/h1&gt;
+  &lt;ul&gt;
+    &lt;li&gt;cat
+    &lt;li&gt;dog
+    &lt;li&gt;fish
+  &lt;/ul&gt;
+&lt;/div&gt;
+</pre>
+</div>
+<div style="float: left; width: 55%;">
+<pre style="height: 100%">
+// example DOM
+var div = {
+  id : "pets",
+  innerHTML : "&lt;h1&gt;Pets&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;cat...",
+  tag : "div",
+  children : [
+    {
+      innerHTML : "Pets",
+      tag : "h1"
+    },
+    {
+      children : [ ... ],
+      innerHTML : "&lt;li&gt;cat&lt;/li&gt;&lt;li&gt;dog...",
+      tag : "ul"
+    }
+  ]
+};
+</pre>
+</div>
+<div style="clear: both"></div>
+
+        </section>
+	  </article>
+	  
+      <article class="smaller">
+        <h3>LNE01 - DOM Manipulation</h3>
+		<ul>
+			<li>Modifying DOM properties changes the document elements
+			<li>DOM is painfully inconsistent across browsers; use a library for this stuff
+		</ul>
+        <section>
+
+<div style="float: left; width: 40%; margin-right: 15px;">
+<pre style="height: 100%">
+&lt;div id=pets style="color:red"&gt;
+  &lt;h1&gt;Pets&lt;/h1&gt;
+  &lt;ul&gt;
+    &lt;li&gt;cat
+    &lt;li&gt;dog
+    &lt;li&gt;fish
+  &lt;/ul&gt;
+&lt;/div&gt;
+</pre>
+</div>
+<div style="float: left; width: 55%;">
+<pre style="height: 100%">
+// get the element
+var el = document.getElementById("pets");
+
+// change the text color from red to blue
+el.style.color = "blue";
+
+// use a library instead
+$('div#pets').css('color', 'blue');
+</pre>
+</div>
+<div style="clear: both"></div>
+
+        </section>
+	  </article>
+	  
+	<article class="smaller">
+        <h3>LNE01 - DOM Events</h3>
+		<ul>
+			<li>The browser exposes events relative to DOM elements
+			<li>You hook into these events by attaching a JavaScript function to the event
+			<li>DOM is painfully inconsistent across browsers; use a library for this stuff
+			<li>NOTE: need to show this in markup; should always add events programmatically
+		</ul>
+        <section>
+
+<div style="float: left; width: 40%; margin-right: 15px;">
+<pre style="height: 100%">
+&lt;div id=pets onclick="alert('You clicked me!')"&gt;
+  &lt;h1&gt;Pets&lt;/h1&gt;
+  &lt;ul&gt;
+    &lt;li&gt;cat
+    &lt;li&gt;dog
+    &lt;li&gt;fish
+  &lt;/ul&gt;
+&lt;/div&gt;
+</pre>
+</div>
+<div style="float: left; width: 55%;">
+<pre style="height: 100%">
+// get the element
+var el = document.getElementById("pets");
+
+// attach a function for the "onclick "event
+el.onclick = function() {
+  alert("You clicked me!");
+  
+  // the object context of this function 
+  // execution is the DOM element
+  console.log(this);
+};
+
+// use a library instead
+$('div#pets').on('click', function() { ... });
+</pre>
+</div>
+<div style="clear: both"></div>
+
+        </section>
+	  </article>
+	  
+	<article class="smaller">
+        <h3>LNE01 - Event Bubbling</h3>
+		<ul>
+			<li>Events against an element bubble up the DOM tree (similar to JS variable hoisting)
+			<li>This allows you to capture events for child elements at a higher level
+			<li>Can significantly speed up your app by reducing event handlers
+			<li>Use a library for this.  If your library doesn't support this, get a new one.
+		</ul>
+        <section>
+
+<div style="float: left; width: 40%; margin-right: 15px;">
+<pre style="height: 100%">
+&lt;div id=pets&gt;
+  &lt;h1&gt;Pets&lt;/h1&gt;
+  &lt;ul&gt;
+    &lt;li&gt;cat
+    &lt;li&gt;dog
+    &lt;li&gt;fish
+  &lt;/ul&gt;
+&lt;/div&gt;
+</pre>
+</div>
+<div style="float: left; width: 55%;">
+<pre style="height: 100%">
+// get the element
+var el = document.getElementById("pets");
+
+// attach a function for the "onclick "event
+el.onclick = function() {
+  alert("You clicked me!");
+  
+  // the object context of this function 
+  // execution is the DOM element
+  console.log(this);
+};
+
+// use a library instead
+$('div#pets').on('click', function() { ... });
+</pre>
+</div>
+<div style="clear: both"></div>
+
+        </section>
+	  </article>	  
+	  
+	  
 	  
 	  <article>
 		<h1>Tips From the Trenches</h1>
 		<p>Part II</p>
 	  </article>
+
+      <article>
+		<h3>Never Never</h3>
+		<p>Never do these things.  There is always a better way.</p>
+		<ul class="">
+			<li>Never use <code>eval()</code>
+			<li>Never use <code>setTimeout("string", 1000)</code>
+			<li>Never use <code>with</code>
+			<li>Never do browser detection to check for a feature.
+			<ul>
+				<li>Do feature detection instead.
+			</ul>
+		</ul>
+	  </article>
 	  
+      <article>
+		<h3>Mostly Never</h3>
+		<p>Rarely do these things.  There is almost always a better way.</p>
+		<ul class="">
+			<li>Don't use <code>document.write()</code> or <code>document.writeln()</code>
+			<li>Don't add to Global Objects' prototype
+			<ul>
+				<li>Exception: polyfills
+			</ul>
+		</ul>
+	  </article>
+	  
+      <article>
+		<h3>Mostly Always</h3>
+		<p>Always do this stuff; there are occasional exceptions.</p>
+		<ul class="">
+			<li>Do explicit comparisons: <code>===</code> and <code>!==</code>
+			<li>Do not put code directly on the page.  Include it in &lt;script&gt; tags
+		</ul>
+	  </article>
+	  
+      <article class="smaller">
+		<h3>Always Always</h3>
+		<p>Always do these things.  There is never a reason not to do them.</p>
+		<ul class="">
+			<li>Force browsers into standards mode with <code>&lt;!doctype html&gt;</code>
+			<li>Include radix for parseInt <code>parseInt(val, 10)</code>
+			<li>Include scripts with <code>&lt;script src=""&gt;</code>
+			<li>Always parse JSON
+		</ul>
+	  </article>
+	  
+      <article class="">
+		<h3>Optimizations</h3>
+		<ul>
+			<li>Follow <a href="http://developer.yahoo.com/performance/rules.html" target="_blank">Yahoo!'s Rules</a>
+			<li>Don't be penny-wise and pound-foolish.
+			<li>Less HTTP requests is king
+			<li>scripts at the bottom; CSS at the top
+			<li>Concatenate and minify files
+			<li>Don't worry about optimizing CSS except
+			<ul style="margin-top: 12px">
+				<li>Don't use CSS expressions
+				<li>Don't use <code>*</code> selectors
+			</ul>
+		</ul>
+	  </article>
+	  
+      <article class="">
+		<h3>Page Layout</h3>
+		<p>For most web sites / applications:</p>
+		<ul>
+			<li>One CSS file at the top
+			<li>One Global JS file at the bottom with your library + global functions
+			<li>One page-specific file at the bottom
+		</ul>
+	  </article>
+	  
+      <article class="">
+		<h3>JavaScript Structure</h3>
+		<p>For most web sites / applications:</p>
+		<ul>
+			<li>Create a global namespace for your application.
+			<li>Put globally available functions available on every page
+			<li>Each page has page-specific JavaScript
+			<li>rename files on publish
+		</ul>
+	  </article>
+	  
+      <article class="smaller">
+		<h3>Strongly Recommended</h3>
+		<p>Strongly recommended from personal experience.</p>
+		<ul class="build">
+			<li>Declare functions as <code>var foo = function() { ... };</code>
+			<li>Use a CSS reset
+			<li>Use Google Closure Linter and the Style Guide
+			<li>Have a one-step build process
+			<li>Concatenate and minify files
+			<li>When in doubt, be more explicit
+		</ul>
+	  </article>
+
 	  <article>
 		<h1>Unsolicited Advice</h1>
 		<p>Part III</p>
@@ -66,9 +740,56 @@
 	  
 	  <article>
 		<h3>Professional Development</h3>
-		<ul>
+		<ul class="build">
 			<li>Prefer books over blogs
-			<li>Prefer old advice over new (ie: Unix philosophy)
+			<ul style="margin-top: 12px">
+				<li>Zero barrier to entry for a blog post
+				<li>Author had to be recognized enough to be published
+				<li>Books are professionally edited
+				<li>Cohesive content
+			</ul>
+			<li style="margin-top: 35px">Prefer timeless advice over new hotness
+			<ul style="margin-top: 12px">
+				<li>Unix Philosophy
+				<li>The Mythical Man-Month (1975)
+				<li>Lessons from Communitree (1978)
+				<li>Better feature: Implement RSS or Faster Website?
+			</ul>
+		</ul>
+	  </article>
+	  
+	  <article>
+		<h3>Professional Development <small>(cont.)</small></h3>
+		<ul class="build">
+			<li>Prefer in-person networking to synthetic
+			<ul style="margin-top: 12px">
+				<li>Relationships are built in the flesh
+				<li>Always going to be of higher quality
+				<li>Life does not happen in a vaccuum
+				<li>New tools good for communication
+			</ul>
+			<li style="margin-top: 35px">Prefer creation over consumption
+			<ul style="margin-top: 12px">
+				<li>Learn faster
+				<li>"when you don't create things, you become defined by your tastes rather than ability. your tastes only narrow & exclude people. so create."  -- why the lucky stiff
+			</ul>
+		</ul>
+	  </article>
+	  
+	  <article class="smaller">
+		<h3>Tools and Environment</h3>
+		<p><strong>The importance of tools and development environment cannot be overstated.</strong></p>
+		<ul>
+			<li>Importance of tools (list tools: editor, environment, monitors, chair, desk, environment, ear plugs, source code control, caffeine)
+			
+			<ul>
+				<li>Zero barrier to entry for a blog post
+				<li>Author had to be recognized enough to be published
+				<li>Books are edited professionally
+			</ul>
+			<li>Prefer old advice over new hotness (ie: Unix philosophy)
+			<li>Timeless Advice &gt; New Hotness
+			<li>Importance of tools (list tools: editor, environment, monitors, chair, desk, environment, ear plugs, source code control, caffeine)
 		</ul>
 	  </article>
 	  
@@ -91,303 +812,59 @@
 			<li>Prefer development on a server to localhost
 		</ul>
 	  </article>
+	  
+	  <article class="smaller">
+		<h3>Miscellaneous</h3>
+		<ul class="build">
+			<li>Bugs are relative to time
+			<ul style="margin-top: 12px">
+				<li>A bug that was introduced 5 minutes ago is infinitely easier to fix than a bug introduced 5 months ago
+				<li>Plan this into your development process
+				<li>The time between developer eyeballs and user feedback should be as short as possible.
+			</ul>
+			<li style="margin-top: 35px">Meetings are mostly useless; often harmful
+			<ul style="margin-top: 12px">
+				<li>"If there had been a true consensus, you wouldn’t have had to have a consensus conference."
+				<li>Consensus doesn't happen in meetings; coercion does.
+				<li>Social dynamics govern meetings, but software is specific
+				<li>If you must have a meeting, put a hard timer on it (15min) or do it while physically standing up.
+			</ul>
+		</ul>
+	  </article>
 
-      <article>
-        <h3>People Worth Listening To</h3>
+      <article class="">
+        <h3>JavaScript People Worth Listening To</h3>
         <ul>
           <li>Douglas Crockford
 		  <li>Steve Souders
-		  <li>Stoyan Stefanov / Yahoo Exceptional Performance Team
+		  <li>Stoyan Stefanov
 		  <li>Paul Irish
-		  <li>John Resig (can get a little too abstract for day-to-day)
+		  <li>John Resig
 		  <li>(bonus!) Bret Victor
         </ul>
       </article>
-
-      <article class='smaller'>
-        <h3>
-          Simple slide with header and text (small font)
-        </h3>
-        <p>
-          This is a slide with just text. This is a slide with just text.
-          This is a slide with just text. This is a slide with just text.
-          This is a slide with just text. This is a slide with just text.
-        </p>
-        <p>
-          There is more text just underneath with a <code>code sample: 5px</code>.
-        </p>
-      </article>
-
-      <article>
-        <h3>
-          Slide with bullet points and a longer title, just because we
-          can make it longer
-        </h3>
+	  
+      <article class="smaller">
+        <h3>Further Reading</h3>
         <ul>
-          <li>
-            Use this template to create your presentation
-          </li>
-          <li>
-            Use the provided color palette, box and arrow graphics, and
-            chart styles
-          </li>
-          <li>
-            Instructions are provided to assist you in using this
-            presentation template effectively
-          </li>
-          <li>
-            At all times strive to maintain Google's corporate look and feel
-          </li>
+          <li><img src="img/good_parts.jpg" alt="JavaScript: The Good Parts" style="vertical-align: middle" /> <a href="http://www.amazon.com/gp/product/0596517742/ref=as_li_ss_tl?ie=UTF8&amp;tag=oakmaccom-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0596517742" target="_blank">JavaScript: The Good Parts</a>
+		  <li><img src="img/good_parts.jpg" alt="JavaScript: The Good Parts" style="vertical-align: middle" /> <a href="http://www.amazon.com/gp/product/0596517742/ref=as_li_ss_tl?ie=UTF8&amp;tag=oakmaccom-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0596517742" target="_blank">JavaScript: The Good Parts</a> (read it twice)
+		  <li><img src="img/js_patterns.jpg" alt="JavaScript Patterns" style="vertical-align: middle" /> <a href="http://www.amazon.com/gp/product/0596806752/ref=as_li_ss_tl?ie=UTF8&amp;tag=oakmaccom-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0596806752" target="_blank">JavaScript Patterns</a>
+		  <li><a href="http://www.html5rocks.com/en/tutorials/internals/howbrowserswork/" target="_blank">How Browsers Work</a>
+		  <li><a href="http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml" target="_blank">Google JavaScript Style Guide</a>
+		  <li><a href="http://developer.yahoo.com/performance/" target="_blank">Yahoo! Exceptional Performance Team</a>
+		  <li><a href="http://www.youtube.com/watch?v=WxmcDoAxdoY" target="_blank">Paul Irish - Primitives of HTML5</a>
         </ul>
-      </article>
-
-      <article>
-        <h3>
-          Slide with bullet points that builds
-        </h3>
-        <ul class="build">
-          <li>
-            This is an example of a list
-          </li>
-          <li>
-            The list items fade in
-          </li>
-          <li>
-            Last one!
-          </li>
-        </ul>
-
-        <div class="build">
-          <p>Any element with child nodes can build.</p>
-          <p>It doesn't have to be a list.</p>
-        </div>
-      </article>
-
-      <article class='smaller'>
-        <h3>
-          Slide with bullet points (small font)
-        </h3>
-        <ul>
-          <li>
-            Use this template to create your presentation
-          <li>
-            Use the provided color palette, box and arrow graphics, and
-            chart styles
-          <li>
-            Instructions are provided to assist you in using this
-            presentation template effectively
-          <li>
-            At all times strive to maintain Google's corporate look and feel
-        </ul>
-      </article>
-
-      <article>
-        <h3>
-          Slide with a table
-        </h3>
-        
-        <table>
-          <tr>
-            <th>
-              Name
-            <th>
-              Occupation
-          <tr>
-            <td>
-              Luke Mahé
-            <td>
-              V.P. of Keepin’ It Real
-          <tr>
-            <td>
-              Marcin Wichary
-            <td>
-              The Michael Bay of Doodles
-        </table>
-      </article>
-      
-      <article class='smaller'>
-        <h3>
-          Slide with a table (smaller text)
-        </h3>
-        
-        <table>
-          <tr>
-            <th>
-              Name
-            <th>
-              Occupation
-          <tr>
-            <td>
-              Luke Mahé
-            <td>
-              V.P. of Keepin’ It Real
-          <tr>
-            <td>
-              Marcin Wichary
-            <td>
-              The Michael Bay of Doodles
-        </table>
-      </article>
-      
-      <article>
-        <h3>
-          Styles
-        </h3>
-        <ul>
-          <li>
-            <span class='red'>class="red"</span>
-          <li>
-            <span class='blue'>class="blue"</span>
-          <li>
-            <span class='green'>class="green"</span>
-          <li>
-            <span class='yellow'>class="yellow"</span>
-          <li>
-            <span class='black'>class="black"</span>
-          <li>
-            <span class='white'>class="white"</span>
-          <li>
-            <b>bold</b> and <i>italic</i>
-        </ul>
-      </article>
-      
-      <article>
-        <h2>
-          Segue slide
-        </h2>
-      </article>
-
-      <article>
-        <h3>
-          Slide with an image
-        </h3>
-        <p>
-          <img style='height: 500px' src='images/example-graph.png'>
+	  </article>
+	  
+      <article class="smaller">
+        <h1>Thank you!</h1>
+        <p>Chris Oakman
+          <br />
+          <a href="mailto:chris@oakmac.com">chris@oakmac.com</a>
+		  <br />
+		  <a href="https://github.com/oakmac/Professional-JavaScript">https://github.com/oakmac/Professional-JavaScript</a>
         </p>
-        <div class='source'>
-          Source: Sergey Brin
-        </div>
-      </article>
-
-      <article>
-        <h3>
-          Slide with an image (centered)
-        </h3>
-        <p>
-          <img class='centered' style='height: 500px' src='images/example-graph.png'>
-        </p>
-        <div class='source'>
-          Source: Larry Page
-        </div>
-      </article>
-
-      <article class='fill'>
-        <h3>
-          Image filling the slide (with optional header)
-        </h3>
-        <p>
-          <img src='images/example-cat.jpg'>
-        </p>
-        <div class='source white'>
-          Source: Eric Schmidt
-        </div>
-      </article>
-
-      <article>
-        <h3>
-          This slide has some code
-        </h3>
-        <section>
-        <pre>
-&lt;script type='text/javascript'&gt;
-  // Say hello world until the user starts questioning
-  // the meaningfulness of their existence.
-  function helloWorld(world) {
-    for (var i = 42; --i &gt;= 0;) {
-      alert('Hello ' + String(world));
-    }
-  }
-&lt;/script&gt;
-&lt;style&gt;
-  p { color: pink }
-  b { color: blue }
-  u { color: 'umber' }
-&lt;/style&gt;
-</pre>
-        </section>
-      </article>
-      
-      <article class='smaller'>
-        <h3>
-          This slide has some code (small font)
-        </h3>
-        <section>
-        <pre>
-&lt;script type='text/javascript'&gt;
-  // Say hello world until the user starts questioning
-  // the meaningfulness of their existence.
-  function helloWorld(world) {
-    for (var i = 42; --i &gt;= 0;) {
-      alert('Hello ' + String(world));
-    }
-  }
-&lt;/script&gt;
-&lt;style&gt;
-  p { color: pink }
-  b { color: blue }
-  u { color: 'umber' }
-&lt;/style&gt;
-</pre>
-        </section>
-      </article>
-      
-      <article>
-        <q>
-          The best way to predict the future is to invent it.
-        </q>
-        <div class='author'>
-          Alan Kay
-        </div>
-      </article>
-      
-      <article class='smaller'>
-        <q>
-          A distributed system is one in which the failure of a computer 
-          you didn’t even know existed can render your own computer unusable.
-        </q>
-        <div class='author'>
-          Leslie Lamport
-        </div>
-      </article>
-      
-      <article class='nobackground'>
-        <h3>
-          A slide with an embed + title
-        </h3>
-        
-        <iframe src='http://www.google.com/doodle4google/history.html'></iframe>
-      </article>
-
-      <article class='nobackground'>
-        <iframe src='http://www.google.com/doodle4google/history.html'></iframe>
-      </article>
-
-      <article class='fill'>
-        <h3>
-          Full-slide embed with (optional) slide title on top
-        </h3>
-        <iframe src='http://www.google.com/doodle4google/history.html'></iframe>
-      </article>
-      
-      <article>
-        <h3>
-          Thank you!
-        </h3>
-        
-        <ul>
-          <li>
-            <a href='http://www.google.com'>google.com</a>
-        </ul>
       </article>
 
     </section>
