@@ -264,27 +264,8 @@ console.log( arr2.join("-") ); // "alpha-bravo-charlie"
 
 // arrays can be the value of an object property
 var obj1 = {
-  cities : ["Houston", "Dallas", "Austin"]
+  cities : ["Austin", "Dallas", "Houston"]
 };
-</pre>
-        </section>
-	  </article>
-	  
-      <article>
-        <h3>L02E04 - Regular Expressions</h3>
-        <section>
-        <pre>
-// JavaScript has regular expressions
-var str1   = "Foo Bar";
-var regexp = /foo/i;
-
-// NOTE: "replace" is a method of every String
-var str2 = str1.replace(regexp, "Bar");
-
-console.log( str2 ); // "Bar Bar"
-
-// Regular Expressions are a powerful tool
-// learn them, use them, don't over-use them
 </pre>
         </section>
 	  </article>
@@ -333,21 +314,38 @@ console.log( str2 ); // "Bar Bar"
 <div style="clear: both"></div>
 
         </section>
+	  </article>	  
+	  
+      <article>
+        <h3>L02E04 - Regular Expressions</h3>
+        <section>
+        <pre>
+// JavaScript has regular expressions
+var str1   = "Foo Bar";
+var regexp = /foo/i;
+
+// NOTE: "replace" is a method of every String
+var str2 = str1.replace(regexp, "Bar");
+
+console.log( str2 ); // "Bar Bar"
+
+// Regular Expressions are a powerful tool
+// learn them, use them, don't over-use them
+</pre>
+        </section>
 	  </article>
 	  
-	  <article class="smaller">
+	  <article class="">
 		<h3>Lesson 3 - Functions</h3>
-
+		<ul>
+			<li>Fundamental modular unit of JavaScript
+			<li>Functions are objects
+			<li>Function execute within the scope of an object
+		</ul>
 	  </article>
 	  
       <article class="smaller">
-        <h3>L03E01 - Function Basics</h3>
-		<!--
-		<ul>
-			<li>Functions execute within the context of an object
-			<li>The value of "this" is the object in which the function is executing in
-		</ul>
-		-->
+        <h3>L03E01 - Functions: Basics</h3>
         <section>
         <pre>
 // a simple function
@@ -365,6 +363,7 @@ var result = add2(3, 2);
 console.log( result ); // 5
 
 // functions can be the value of an object property
+// when this happens they are often called "methods"
 var obj1 = {
   add : add2,
   subtract : function(a, b) {
@@ -379,7 +378,7 @@ console.log( obj1.subtract(3, 2) ); // 1
 	  </article>
 	  
       <article class="smaller">
-        <h3>L03E02 - Variable Scope</h3>
+        <h3>L03E02 - Functions: Variable Scope</h3>
         <section>
         <pre>
 var a = "apple";
@@ -410,12 +409,12 @@ console.log(b); // "banana" (the value of "b" in this scope does not change)
 	  </article>
 	  
       <article class="smaller">
-        <h3>L03E03 - Closure</h3>
+        <h3>L03E03 - Functions: Closure</h3>
         <section>
         <pre>
 var counter = (function() {
 
-  // variable count is defined inside our function
+  // variable "count" is defined inside our function
   var count = 0;
   
   // we return an object with three properties
@@ -429,7 +428,7 @@ var counter = (function() {
 })(); // execute the function immediately, which returns an object
 
 console.log( counter.value() ); // 0
-for (var i = 0; i < 6; i++) { // increment 6 times
+for (var i = 0; i &lt; 6; i++) { // increment 6 times
   counter.up();
 }
 console.log( counter.value() ); // 6
@@ -442,29 +441,194 @@ console.log( counter.value() ); // 5
         </section>
 	  </article>
 
+      <article class="">
+        <h3>L03E04 - Functions: Execution Context</h3>
+		<ul>
+			<li>All functions execute within the scope of an object.
+			<li>The keyword <code class="blue">this</code> refers to the object that the function is executing in
+		</ul>
+	  </article>
+	  
       <article class="smaller">
-        <h3>L03E03 - Execution Scope</h3>
+        <h3>L03E04 - Functions: Execution Context <small>(cont.)</small></h3>
+        <section>
+        <pre style="margin-top: 20px">
+var printThis = function() {
+  console.log( this.foo );
+};
+
+var obj1 = {
+  foo     : "Level 1",
+  printMe : printThis,
+  child : {
+    foo     : "Level 2",
+    printMe : printThis
+  }
+};
+
+// executing in the scope of the global object (window)
+printThis(); // undefined because window.foo does not exist
+
+// executing in the scope of obj1
+obj1.printMe(); // "Level 1"
+
+// executing in the scope of obj1.child
+obj1.child.printMe(); // "Level 2"
+
+// executing obj1.child.printMe in the scope of obj1
+obj1.child.printMe.apply(obj1); // "Level 1"
+
+// executing printThis in the scope of a new object
+printThis.apply( { foo : "Inception!" } ); // "Inception!"
+		</pre>
+        </section>
+	  </article>	  
+	  
+      <article>
+        <h3>Lesson 4 - Object Inheritance</h3>
+		<ul>
+			<li>All objects are linked to a prototype object
+			<li>When accessing a property on an object, JS will look up the prototype chain until it bottoms out at Object.prototype
+		</ul>
+	  </article>
+	  
+      <article class="smaller">
+        <h3>L04E01 - Basic .prototype Usage</h3>
         <section>
         <pre>
+// create an empty object, it inherits from Object.prototype
+var obj1 = {};
+console.log( obj1.foo ); // undefined - property "foo" does not exist on
+                         //             either obj1 or it's prototype
 
+// add foo to Object.prototype
+Object.prototype.foo = "bar";
+console.log( obj1.foo ); // "bar" - property "foo" does not exist on obj1,
+                         //         but was found on it's prototype
+
+// add "foo" to obj1 directly
+obj1.foo = "ZZZ";
+console.log( obj1.foo ); // "ZZZ" - property "foo" is directly on the object,
+                         //         we don't look up the prototype chain
+
+// remove "foo" from obj1
+delete obj1.foo;
+console.log( obj1.foo ); // "bar" - property "foo" does not exist on obj1,
+                         //         but was found on it's prototype
+						 
+// remove "foo" from Object.prototype
+delete Object.prototype.foo;
+console.log( obj1.foo ); // undefined - property "foo" does not exist on
+                         //             either obj1 or it's prototype
+
+// NOTE: don't modify Object.prototype in practice; this is only for example
 		</pre>
         </section>
 	  </article>
 	  
-	  <article>
-		<h3>Lesson N - The DOM</h3>
-		
+      <article class="smaller">
+        <h3>L04E01 - Basic .prototype Usage <small>(cont.)</small></h3>
+        <section>
+        <pre>
+var obj1 = {};
+var obj2 = {};
+console.log( obj1.foo ); // undefined
+console.log( obj2.foo ); // undefined
+
+Object.prototype.foo = "bar";
+console.log( obj1.foo ); // "bar"
+console.log( obj2.foo ); // "bar"
+
+obj1.foo = "ZZZ";
+console.log( obj1.foo ); // "ZZZ"
+console.log( obj2.foo ); // "bar"
+
+delete Object.prototype.foo;
+console.log( obj1.foo ); // "ZZZ"
+console.log( obj2.foo ); // undefined
+
+// NOTE: don't modify Object.prototype in practice; this is only for example
+</pre>
+        </section>
 	  </article>
 	  
       <article class="smaller">
-        <h3>LNE01 - What is the DOM?</h3>
+        <h3>L04E02 - Constuctor Functions</h3>
+        <section>
+        <pre>
+// circle Constructor
+var Circle = function(radius) {
+  // use a default radius if the one provided is not valid
+  if (typeof radius !== 'number' || radius &lt; 0) {
+    radius = 5;
+  }
+	
+  // assign the radius to this object's context (ie: this)
+  this.radius = radius;
+};
+
+// calculate area
+Circle.prototype.area = function() {
+  return Math.PI * this.radius * this.radius;
+};
+
+var c1 = new Circle(8);
+console.log( c1.radius ); // 8
+console.log( c1.area() ); // 201.062
+
+var c2 = new Circle();  // use the default radius
+console.log( c2.radius ); // 5
+console.log( c2.area() ); // 78.540
+
+// NOTE: the .area function only exists in memory once no matter how many
+//       Circle objects we create because it exists on the prototype
+</pre>
+        </section>
+	  </article>	  
+	  
+	  <article>
+		<h3>Lesson 5 - The Browser</h3>
+		<ul>
+			<li>The browser gives us a context to execute JavaScript on
+			<li>It exposes global objects for us to use
+			<li>A DOM structure of the underlying HTML
+			<li>Events for us to hook into
+		</ul>
+	  </article>
+	  
+      <article class="smaller">
+        <h3>L05E01 - Browser Context</h3>
+		<ul>
+			<li>Browser gives us several global objects to work with
+			<li>The global object is <code>window</code>
+			<li><code>window.document</code> is the start of the DOM tree
+			<li>There are many others; check documentation
+			<li>Browser objects are inconsistent; use a library
+		</ul>
+        <section>
+<pre>
+// these three lines all do the same thing
+foo = "bar";        // no "var" declaration, so it bubbles up to the global object
+this.foo = "bar";   // "this" is the global object
+window.foo = "bar"; // "window" is the global object
+
+// NOTE: don't this in practice
+
+// the best way to establish a global is:
+window.MYAPP = window.MYAPP || {};
+</pre>
+        </section>
+	  </article>
+	  
+      <article class="smaller">
+        <h3>L05E02 - What is the DOM?</h3>
 		<ul>
 			<li>The DOM is what it sounds like: Document Object Model
 			<li>It's the browser exposing the underlying document structure through JavaScript objects
 		</ul>
         <section>
 
-<div style="float: left; width: 40%; margin-right: 15px;">
+<div style="float: left; width: 35%; margin-right: 15px;">
 <pre style="height: 100%">
 &lt;!-- HTML --&gt;
 &lt;div id=pets&gt;
@@ -477,10 +641,10 @@ console.log( counter.value() ); // 5
 &lt;/div&gt;
 </pre>
 </div>
-<div style="float: left; width: 55%;">
+<div style="float: left; width: 60%;">
 <pre style="height: 100%">
-// example DOM
-var div = {
+// example DOM object
+{
   id : "pets",
   innerHTML : "&lt;h1&gt;Pets&lt;/h1&gt;&lt;ul&gt;&lt;li&gt;cat...",
   tag : "div",
@@ -495,7 +659,9 @@ var div = {
       tag : "ul"
     }
   ]
-};
+}
+
+// NOTE: not complete; just an example
 </pre>
 </div>
 <div style="clear: both"></div>
@@ -504,7 +670,7 @@ var div = {
 	  </article>
 	  
       <article class="smaller">
-        <h3>LNE01 - DOM Manipulation</h3>
+        <h3>L05E03 - DOM Manipulation</h3>
 		<ul>
 			<li>Modifying DOM properties changes the document elements
 			<li>DOM is painfully inconsistent across browsers; use a library for this stuff
@@ -541,18 +707,17 @@ $('div#pets').css('color', 'blue');
 	  </article>
 	  
 	<article class="smaller">
-        <h3>LNE01 - DOM Events</h3>
+        <h3>L05E04 - DOM Events</h3>
 		<ul>
 			<li>The browser exposes events relative to DOM elements
 			<li>You hook into these events by attaching a JavaScript function to the event
 			<li>DOM is painfully inconsistent across browsers; use a library for this stuff
-			<li>NOTE: need to show this in markup; should always add events programmatically
 		</ul>
         <section>
 
-<div style="float: left; width: 40%; margin-right: 15px;">
+<div style="float: left; width: 35%; margin-right: 15px;">
 <pre style="height: 100%">
-&lt;div id=pets onclick="alert('You clicked me!')"&gt;
+&lt;div id=pets&gt;
   &lt;h1&gt;Pets&lt;/h1&gt;
   &lt;ul&gt;
     &lt;li&gt;cat
@@ -562,7 +727,7 @@ $('div#pets').css('color', 'blue');
 &lt;/div&gt;
 </pre>
 </div>
-<div style="float: left; width: 55%;">
+<div style="float: left; width: 60%;">
 <pre style="height: 100%">
 // get the element
 var el = document.getElementById("pets");
@@ -586,110 +751,112 @@ $('div#pets').on('click', function() { ... });
 	  </article>
 	  
 	<article class="smaller">
-        <h3>LNE01 - Event Bubbling</h3>
+        <h3>L05E05 - Event Bubbling</h3>
 		<ul>
-			<li>Events against an element bubble up the DOM tree (similar to JS variable hoisting)
+			<li>Events against an element bubble up the DOM tree (similar to JS prototype chain)
 			<li>This allows you to capture events for child elements at a higher level
 			<li>Can significantly speed up your app by reducing event handlers
-			<li>Use a library for this.  If your library doesn't support this, get a new one.
+			<li>Use a library for this.  If your library doesn't support this, user a newer one.
 		</ul>
         <section>
 
-<div style="float: left; width: 40%; margin-right: 15px;">
+<div style="float: left; width: 35%; margin-right: 15px;">
 <pre style="height: 100%">
 &lt;div id=pets&gt;
   &lt;h1&gt;Pets&lt;/h1&gt;
   &lt;ul&gt;
     &lt;li&gt;cat
-    &lt;li&gt;dog
+    &lt;li class=doggy&gt;dog
     &lt;li&gt;fish
   &lt;/ul&gt;
 &lt;/div&gt;
 </pre>
 </div>
-<div style="float: left; width: 55%;">
+<div style="float: left; width: 60%;">
 <pre style="height: 100%">
 // get the element
 var el = document.getElementById("pets");
 
 // attach a function for the "onclick "event
-el.onclick = function() {
-  alert("You clicked me!");
+el.onclick = function(event) {
+  // check to make sure they clicked on li.doggy
+  if (event.target.tagName.toLowerCase() === 'li'
+      && event.target.className === 'doggy') {
+    alert('Woof woof!');
+  }
   
   // the object context of this function 
-  // execution is the DOM element
+  // execution is still the DOM element
   console.log(this);
+  
+  // but the event object is for the
+  // element that received the click
+  console.log(event);
 };
-
-// use a library instead
-$('div#pets').on('click', function() { ... });
 </pre>
 </div>
 <div style="clear: both"></div>
 
         </section>
-	  </article>	  
-	  
-	  
+	</article>
 	  
 	  <article>
 		<h1>Tips From the Trenches</h1>
 		<p>Part II</p>
 	  </article>
 
-      <article>
+      <article class="smaller">
 		<h3>Never Never</h3>
 		<p>Never do these things.  There is always a better way.</p>
-		<ul class="">
+		<ul style="margin-top: 20px">
 			<li>Never use <code>eval()</code>
 			<li>Never use <code>setTimeout("string", 1000)</code>
 			<li>Never use <code>with</code>
 			<li>Never do browser detection to check for a feature.
-			<ul>
+			<ul style="margin-top: 8px">
 				<li>Do feature detection instead.
 			</ul>
 		</ul>
-	  </article>
-	  
-      <article>
-		<h3>Mostly Never</h3>
-		<p>Rarely do these things.  There is almost always a better way.</p>
-		<ul class="">
+			
+		<h3 style="margin-top: 40px">Mostly Never</h3>
+		<p>Rarely do these things.  Only when there is no other way.</p>
+		<ul style="margin-top: 20px">
 			<li>Don't use <code>document.write()</code> or <code>document.writeln()</code>
 			<li>Don't add to Global Objects' prototype
-			<ul>
+			<ul style="margin-top: 8px">
 				<li>Exception: polyfills
 			</ul>
-		</ul>
-	  </article>
-	  
-      <article>
-		<h3>Mostly Always</h3>
-		<p>Always do this stuff; there are occasional exceptions.</p>
-		<ul class="">
-			<li>Do explicit comparisons: <code>===</code> and <code>!==</code>
-			<li>Do not put code directly on the page.  Include it in &lt;script&gt; tags
 		</ul>
 	  </article>
 	  
       <article class="smaller">
 		<h3>Always Always</h3>
 		<p>Always do these things.  There is never a reason not to do them.</p>
-		<ul class="">
+		<ul style="margin-top: 20px">
 			<li>Force browsers into standards mode with <code>&lt;!doctype html&gt;</code>
 			<li>Include radix for parseInt <code>parseInt(val, 10)</code>
-			<li>Include scripts with <code>&lt;script src=""&gt;</code>
-			<li>Always parse JSON
+			<li>Parse JSON safely
+		</ul>
+		
+		<h3 style="margin-top: 40px">Mostly Always</h3>
+		<p>Always do this stuff.  There are occasional exceptions.</p>
+		<ul style="margin-top: 20px;">
+			<li>Do explicit comparisons: <code>===</code> and <code>!==</code>
+			<li>Do not put code directly on the page.  Include it in <code>&lt;script&gt;</code> tags
+			<li>Add event handlers programmatically
+			<li>Use a library to abstract DOM manipulations
+			<li>Use a library to abstract browser objects (ie: XMLHttpRequest)
 		</ul>
 	  </article>
 	  
-      <article class="">
-		<h3>Optimizations</h3>
+      <article class="smaller">
+		<h3>Front-End Optimizations</h3>
 		<ul>
 			<li>Follow <a href="http://developer.yahoo.com/performance/rules.html" target="_blank">Yahoo!'s Rules</a>
-			<li>Don't be penny-wise and pound-foolish.
+			<li>Don't be penny-wise and pound-foolish.  Prioritize.
 			<li>Less HTTP requests is king
-			<li>scripts at the bottom; CSS at the top
+			<li>CSS in the <code>&lt;head&gt;</code>
+			<li><code>&lt;scripts&gt;</code> at the bottom
 			<li>Concatenate and minify files
 			<li>Don't worry about optimizing CSS except
 			<ul style="margin-top: 12px">
@@ -699,37 +866,56 @@ $('div#pets').on('click', function() { ... });
 		</ul>
 	  </article>
 	  
-      <article class="">
-		<h3>Page Layout</h3>
-		<p>For most web sites / applications:</p>
-		<ul>
-			<li>One CSS file at the top
-			<li>One Global JS file at the bottom with your library + global functions
-			<li>One page-specific file at the bottom
-		</ul>
+      <article class="smaller">
+		<h3 style="margin-bottom: 40px;">Page Layout Recommendation</h3>
+		
+<h3>Development</h3>
+<pre style="margin-top: 20px; margin-bottom: 20px">
+&lt;!-- in the head --&gt;
+&lt;link rel="stylesheet" href="css/base.css" /&gt;
+&lt;link rel="stylesheet" href="css/main.css" /&gt;
+
+&lt;!-- at the bottom --&gt;
+&lt;script src="js/library.js"&gt;&lt;/script&gt;
+&lt;script src="js/global.js"&gt;&lt;/script&gt;
+&lt;script src="js/page.js"&gt;&lt;/script&gt;
+</pre>
+
+<h3>Production</h3>
+<pre style="margin-top: 20px; margin-bottom: 20px">
+&lt;!-- in the head --&gt;
+&lt;link rel="stylesheet" href="css/base-main.ea765ced3a.css" /&gt;
+
+&lt;!-- at the bottom --&gt;
+&lt;script src="js/library-global.0d177de34b.js"&gt;&lt;/script&gt;
+&lt;script src="js/page.f8161f056f.js"&gt;&lt;/script&gt;
+</pre>
+		
 	  </article>
 	  
-      <article class="">
+      <article class="smaller">
 		<h3>JavaScript Structure</h3>
 		<p>For most web sites / applications:</p>
 		<ul>
 			<li>Create a global namespace for your application.
-			<li>Put globally available functions available on every page
-			<li>Each page has page-specific JavaScript
-			<li>rename files on publish
+			<li>Put universally needed functions in your global, include on every page
+			<li>Put page-specific JavaScript in the module pattern and "export" out event handlers
+			<li>Rename files on publish to bust cache
 		</ul>
+		<h4>UltimateCentral.com demo</h4>
 	  </article>
 	  
       <article class="smaller">
-		<h3>Strongly Recommended</h3>
+		<h3>Misc Recommended</h3>
 		<p>Strongly recommended from personal experience.</p>
-		<ul class="build">
+		<ul>
 			<li>Declare functions as <code>var foo = function() { ... };</code>
 			<li>Use a CSS reset
-			<li>Use Google Closure Linter and the Style Guide
-			<li>Have a one-step build process
-			<li>Concatenate and minify files
+			<li>Use Google Closure Linter and the Google Style Guide
+			<li>Have a one-step build / deploy process
+			<li>Develop on a server
 			<li>When in doubt, be more explicit
+			<li>"Smart data structures and dumb code works a lot better than the other way around."
 		</ul>
 	  </article>
 
@@ -738,7 +924,7 @@ $('div#pets').on('click', function() { ... });
 		<p>Part III</p>
 	  </article>
 	  
-	  <article>
+	  <article class="smaller">
 		<h3>Professional Development</h3>
 		<ul class="build">
 			<li>Prefer books over blogs
@@ -746,70 +932,60 @@ $('div#pets').on('click', function() { ... });
 				<li>Zero barrier to entry for a blog post
 				<li>Author had to be recognized enough to be published
 				<li>Books are professionally edited
-				<li>Cohesive content
+				<li>Books have cohesive content
 			</ul>
-			<li style="margin-top: 35px">Prefer timeless advice over new hotness
+			<li style="margin-top: 40px">Prefer advice that has stood the test of time
 			<ul style="margin-top: 12px">
 				<li>Unix Philosophy
 				<li>The Mythical Man-Month (1975)
 				<li>Lessons from Communitree (1978)
-				<li>Better feature: Implement RSS or Faster Website?
+				<li>Better feature in 2005: Implement RSS or Faster Website?
+				<li>Better feature in 2012: Facebook Like Button or Faster Website?
 			</ul>
 		</ul>
 	  </article>
 	  
-	  <article>
+	  <article class="smaller">
 		<h3>Professional Development <small>(cont.)</small></h3>
 		<ul class="build">
 			<li>Prefer in-person networking to synthetic
 			<ul style="margin-top: 12px">
 				<li>Relationships are built in the flesh
-				<li>Always going to be of higher quality
+				<li>In-person communication is always more expressive than synthetic
 				<li>Life does not happen in a vaccuum
-				<li>New tools good for communication
+				<li>Use new tools for communication, but <strong>build relationships</strong>
 			</ul>
-			<li style="margin-top: 35px">Prefer creation over consumption
+			<li style="margin-top: 40px">Prefer creation over consumption
 			<ul style="margin-top: 12px">
-				<li>Learn faster
-				<li>"when you don't create things, you become defined by your tastes rather than ability. your tastes only narrow & exclude people. so create."  -- why the lucky stiff
+				<li>Makes you learn faster
+				<li>Aim for quality, not quantity
+				<li>"when you don't create things, you become defined by your tastes rather than ability. your tastes only narrow and exclude people. so create."  -- why the lucky stiff
 			</ul>
 		</ul>
 	  </article>
 	  
 	  <article class="smaller">
 		<h3>Tools and Environment</h3>
-		<p><strong>The importance of tools and development environment cannot be overstated.</strong></p>
-		<ul>
-			<li>Importance of tools (list tools: editor, environment, monitors, chair, desk, environment, ear plugs, source code control, caffeine)
-			
-			<ul>
-				<li>Zero barrier to entry for a blog post
-				<li>Author had to be recognized enough to be published
-				<li>Books are edited professionally
-			</ul>
-			<li>Prefer old advice over new hotness (ie: Unix philosophy)
-			<li>Timeless Advice &gt; New Hotness
-			<li>Importance of tools (list tools: editor, environment, monitors, chair, desk, environment, ear plugs, source code control, caffeine)
-		</ul>
-	  </article>
-	  
-	  <article>
-		<h3>Development Environment</h3>
-		<p>I could give a whole talk on this stuff, but just wanted to distill these nuggets.</p>
-		<p>This stuff separates the amateurs from the professionals.  If you're not using this stuff at your work / project, you're doing it wrong.</p>
-		<p>Have a "baseline" list, then have a "recommended" list</p>
-		<ul>
-			<li>Source Code Control
-			<li>Pick powerful tools; learn them well
-			  <ul>
-				<li>Source Code Control
+		<p>The importance of tools and enviroment cannot be overstated.  <strong>Pick powerful tools and learn them well.</strong></p>
+		<ul style="margin-top: 20px" class="build">
+			<li>Software
+			<ul style="margin-top: 12px">
 				<li>Text Editor
+				<li>Source Code Control
 				<li>Bug Tracker
-				<li>Automated Build process
-				<li>(bonus!) testing
-			  </ul>
-			<li>If it can be automated; it should be (ie: build systems, deployment systems, monitoring, etc)
-			<li>Prefer development on a server to localhost
+				<li>Build / Deploy Tools
+				<li>Which is the best software platform for your work?
+			</ul>
+			<li style="margin-top: 25px">Physical
+			<ul style="margin-top: 12px">
+				<li>Keyboard and mouse
+				<li>Typing speed
+				<li>Monitor size and pixel space
+				<li>Desk and chair
+				<li>Noise: headphones, earplugs, etc
+				<li>Lighting
+				<li>Sleep and caffeine
+			</ul>
 		</ul>
 	  </article>
 	  
@@ -822,11 +998,11 @@ $('div#pets').on('click', function() { ... });
 				<li>Plan this into your development process
 				<li>The time between developer eyeballs and user feedback should be as short as possible.
 			</ul>
-			<li style="margin-top: 35px">Meetings are mostly useless; often harmful
+			<li style="margin-top: 40px">Meetings about software are mostly useless; often harmful
 			<ul style="margin-top: 12px">
 				<li>"If there had been a true consensus, you wouldn’t have had to have a consensus conference."
-				<li>Consensus doesn't happen in meetings; coercion does.
-				<li>Social dynamics govern meetings, but software is specific
+				<li>Coercion is more likely to happen than consensus.
+				<li>Group dynamics govern meetings, but software needs specificity
 				<li>If you must have a meeting, put a hard timer on it (15min) or do it while physically standing up.
 			</ul>
 		</ul>
@@ -864,10 +1040,10 @@ $('div#pets').on('click', function() { ... });
           <a href="mailto:chris@oakmac.com">chris@oakmac.com</a>
 		  <br />
 		  <a href="https://github.com/oakmac/Professional-JavaScript">https://github.com/oakmac/Professional-JavaScript</a>
+		  <br />
+		  Available for consulting
         </p>
+		<div style="position: absolute; bottom: 40px">P.S. Play poker in Houston?  email me :)</div>
       </article>
 
     </section>
-
-  </body>
-</html>
