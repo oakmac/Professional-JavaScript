@@ -81,7 +81,7 @@ if (1000 === num3) { // true
   console.log('one thousand');
 }
 
-// NOTE: beware of floating point operations in JavaScript
+// beware of floating point operations in JavaScript
 if (0.1 + 0.2 === 0.3) { // false
   console.log('Pigs are flying.');
 }
@@ -236,7 +236,7 @@ console.log(me.name.first + " " + me.name.last); // "Chris Oakman"
 	  </article>
 	  
       <article class="smaller">
-        <h3>L02E03 - Arrays</h3>
+        <h3>L02E03 - Objects: Arrays</h3>
         <section>
         <pre>
 // this is an empty array
@@ -317,7 +317,7 @@ var obj1 = {
 	  </article>	  
 	  
       <article>
-        <h3>L02E04 - Regular Expressions</h3>
+        <h3>L02E04 - Objects: Regular Expressions</h3>
         <section>
         <pre>
 // JavaScript has regular expressions
@@ -403,7 +403,7 @@ var func2 = function() {
 };
 console.log(b); // "banana"
 func2();        // "blueberry"
-console.log(b); // "banana" (the value of "b" in this scope does not change)
+console.log(b); // "banana"
 </pre>
         </section>
 	  </article>
@@ -482,7 +482,7 @@ obj1.child.printMe.apply(obj1); // "Level 1"
 printThis.apply( { foo : "Inception!" } ); // "Inception!"
 		</pre>
         </section>
-	  </article>	  
+	  </article>
 	  
       <article>
         <h3>Lesson 4 - Object Inheritance</h3>
@@ -709,7 +709,7 @@ $('div#pets').css('color', 'blue');
 	<article class="smaller">
         <h3>L05E04 - DOM Events</h3>
 		<ul>
-			<li>The browser exposes events relative to DOM elements
+			<li>The browser exposes events on DOM elements
 			<li>You hook into these events by attaching a JavaScript function to the event
 			<li>DOM is painfully inconsistent across browsers; use a library for this stuff
 		</ul>
@@ -733,12 +733,16 @@ $('div#pets').css('color', 'blue');
 var el = document.getElementById("pets");
 
 // attach a function for the "onclick "event
-el.onclick = function() {
+el.onclick = function(event) {
   alert("You clicked me!");
   
   // the object context of this function 
   // execution is the DOM element
   console.log(this);
+  
+  // the "event" variable is an object
+  // with information about the event
+  console.log(event);
 };
 
 // use a library instead
@@ -752,7 +756,7 @@ $('div#pets').on('click', function() { ... });
 	  
 	<article class="smaller">
         <h3>L05E05 - Event Bubbling</h3>
-		<ul>
+		<ul style="margin-top: 20px">
 			<li>Events against an element bubble up the DOM tree (similar to JS prototype chain)
 			<li>This allows you to capture events for child elements at a higher level
 			<li>Can significantly speed up your app by reducing event handlers
@@ -761,7 +765,7 @@ $('div#pets').on('click', function() { ... });
         <section>
 
 <div style="float: left; width: 35%; margin-right: 15px;">
-<pre style="height: 100%">
+<pre style="margin-top: 20px; height: 100%">
 &lt;div id=pets&gt;
   &lt;h1&gt;Pets&lt;/h1&gt;
   &lt;ul&gt;
@@ -773,7 +777,7 @@ $('div#pets').on('click', function() { ... });
 </pre>
 </div>
 <div style="float: left; width: 60%;">
-<pre style="height: 100%">
+<pre style="margin-top: 20px; height: 100%">
 // get the element
 var el = document.getElementById("pets");
 
@@ -786,7 +790,7 @@ el.onclick = function(event) {
   }
   
   // the object context of this function 
-  // execution is still the DOM element
+  // execution is the "pets" DOM element
   console.log(this);
   
   // but the event object is for the
@@ -894,7 +898,7 @@ el.onclick = function(event) {
 	  </article>
 	  
       <article class="smaller">
-		<h3>JavaScript Structure</h3>
+		<h3>Application JavaScript Structure</h3>
 		<p>For most web sites / applications:</p>
 		<ul>
 			<li>Create a global namespace for your application.
